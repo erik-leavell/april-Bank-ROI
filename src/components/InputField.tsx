@@ -67,57 +67,56 @@ const InputField: React.FC<InputFieldProps> = ({
       <label className="text-xs font-medium" style={{ color: '#3A3B4D' }}>
         {label}
       </label>
-      <div className="flex items-center gap-2">
-        {!locked && (
+      {/* Slider above the value box */}
+      {!locked && (
+        <input
+          type="range"
+          min={sliderMin}
+          max={sliderMax}
+          step={sliderStep}
+          value={sliderValue}
+          onChange={(e) => {
+            const raw = parseFloat(e.target.value);
+            onChange(format === 'percent' ? raw / 100 : raw);
+          }}
+          className="w-full"
+        />
+      )}
+      <div
+        className="flex items-center rounded-md border py-1.5 text-sm font-medium"
+        style={{ backgroundColor: bgColor, borderColor }}
+      >
+        {format === 'currency' && !locked && (
+          <span className="pl-2 text-xs shrink-0" style={{ color: '#3A3B4D' }}>
+            $
+          </span>
+        )}
+        {locked ? (
+          <span className="w-full text-right px-3" style={{ color: '#3A3B4D' }}>
+            {format === 'currency' && <span>$</span>}
+            {format === 'percent'
+              ? `${(value * 100).toFixed(1)}%`
+              : format === 'currency'
+              ? value.toLocaleString()
+              : value}
+          </span>
+        ) : (
           <input
-            type="range"
-            min={sliderMin}
-            max={sliderMax}
-            step={sliderStep}
-            value={sliderValue}
+            type="text"
+            value={displayValue()}
             onChange={(e) => {
-              const raw = parseFloat(e.target.value);
-              onChange(format === 'percent' ? raw / 100 : raw);
+              const parsed = parseInput(e.target.value);
+              onChange(Math.min(Math.max(parsed, min), max));
             }}
-            className="flex-1 min-w-0"
+            className="flex-1 min-w-0 bg-transparent text-right outline-none text-sm font-medium"
+            style={{ color: '#1A2040', paddingLeft: format === 'currency' ? '0' : '8px', paddingRight: format === 'percent' ? '2px' : '8px' }}
           />
         )}
-        <div
-          className="flex items-center rounded-md border py-1.5 text-sm font-medium min-w-[90px]"
-          style={{ backgroundColor: bgColor, borderColor }}
-        >
-          {format === 'currency' && !locked && (
-            <span className="pl-2 text-xs shrink-0" style={{ color: '#3A3B4D' }}>
-              $
-            </span>
-          )}
-          {locked ? (
-            <span className="w-full text-right px-3" style={{ color: '#3A3B4D' }}>
-              {format === 'currency' && <span>$</span>}
-              {format === 'percent'
-                ? `${(value * 100).toFixed(1)}%`
-                : format === 'currency'
-                ? value.toLocaleString()
-                : value}
-            </span>
-          ) : (
-            <input
-              type="text"
-              value={displayValue()}
-              onChange={(e) => {
-                const parsed = parseInput(e.target.value);
-                onChange(Math.min(Math.max(parsed, min), max));
-              }}
-              className="flex-1 min-w-0 bg-transparent text-right outline-none text-sm font-medium"
-              style={{ color: '#1A2040', paddingLeft: format === 'currency' ? '0' : '12px', paddingRight: format === 'percent' ? '2px' : '12px' }}
-            />
-          )}
-          {format === 'percent' && !locked && (
-            <span className="pr-2 text-xs font-semibold shrink-0" style={{ color: '#3A3B4D' }}>
-              %
-            </span>
-          )}
-        </div>
+        {format === 'percent' && !locked && (
+          <span className="pr-2 text-xs font-semibold shrink-0" style={{ color: '#3A3B4D' }}>
+            %
+          </span>
+        )}
       </div>
     </div>
   );
