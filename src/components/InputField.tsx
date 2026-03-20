@@ -83,11 +83,16 @@ const InputField: React.FC<InputFieldProps> = ({
           />
         )}
         <div
-          className="relative rounded-md border px-3 py-1.5 text-sm font-medium min-w-[100px] text-right"
+          className="flex items-center rounded-md border py-1.5 text-sm font-medium min-w-[90px]"
           style={{ backgroundColor: bgColor, borderColor }}
         >
+          {format === 'currency' && !locked && (
+            <span className="pl-2 text-xs shrink-0" style={{ color: '#3A3B4D' }}>
+              $
+            </span>
+          )}
           {locked ? (
-            <span style={{ color: '#3A3B4D' }}>
+            <span className="w-full text-right px-3" style={{ color: '#3A3B4D' }}>
               {format === 'currency' && <span>$</span>}
               {format === 'percent'
                 ? `${(value * 100).toFixed(1)}%`
@@ -103,18 +108,13 @@ const InputField: React.FC<InputFieldProps> = ({
                 const parsed = parseInput(e.target.value);
                 onChange(Math.min(Math.max(parsed, min), max));
               }}
-              className="w-full bg-transparent text-right outline-none text-sm font-medium"
-              style={{ color: '#1A2040' }}
+              className="flex-1 min-w-0 bg-transparent text-right outline-none text-sm font-medium"
+              style={{ color: '#1A2040', paddingLeft: format === 'currency' ? '0' : '12px', paddingRight: format === 'percent' ? '2px' : '12px' }}
             />
           )}
           {format === 'percent' && !locked && (
-            <span className="absolute right-1 top-1/2 -translate-y-1/2 text-xs pointer-events-none" style={{ color: '#CBC9E6' }}>
+            <span className="pr-2 text-xs font-semibold shrink-0" style={{ color: '#3A3B4D' }}>
               %
-            </span>
-          )}
-          {format === 'currency' && !locked && (
-            <span className="absolute left-1 top-1/2 -translate-y-1/2 text-xs pointer-events-none" style={{ color: '#CBC9E6' }}>
-              $
             </span>
           )}
         </div>

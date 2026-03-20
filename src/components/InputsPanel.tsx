@@ -188,7 +188,7 @@ const InputsPanel: React.FC<InputsPanelProps> = ({ inputs, onInputChange, onRese
       </div>
 
       {/* Scenario column headers */}
-      <div className="grid grid-cols-[220px_1fr_1fr_1fr] gap-3 px-2">
+      <div className="grid grid-cols-[200px_1fr_1fr_1fr] gap-2 px-2">
         <div />
         {scenarios.map((s) => (
           <div
@@ -206,7 +206,7 @@ const InputsPanel: React.FC<InputsPanelProps> = ({ inputs, onInputChange, onRese
 
       {/* Sections */}
       {SECTIONS.map((section) => (
-        <div key={section.title} className="bg-white rounded-xl shadow-sm overflow-hidden">
+        <div key={section.title} className="bg-white rounded-xl shadow-sm">
           <button
             onClick={() => toggleSection(section.title)}
             className="w-full flex items-center justify-between px-5 py-3 text-left"
@@ -218,9 +218,9 @@ const InputsPanel: React.FC<InputsPanelProps> = ({ inputs, onInputChange, onRese
             </span>
           </button>
           {openSections[section.title] && (
-            <div className="px-5 py-4 space-y-4">
+            <div className="px-4 py-4 space-y-4">
               {section.fields.map((field) => (
-                <div key={field.key} className="grid grid-cols-[220px_1fr_1fr_1fr] gap-3 items-end">
+                <div key={field.key} className="grid grid-cols-[200px_1fr_1fr_1fr] gap-2 items-end">
                   <div className="flex items-center gap-1.5 text-xs font-medium py-2" style={{ color: '#3A3B4D' }}>
                     {field.label}
                     {SOURCE_META[field.key] && (
