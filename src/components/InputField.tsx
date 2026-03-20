@@ -23,20 +23,20 @@ const InputField: React.FC<InputFieldProps> = ({
   locked = false,
   highlight = 'editable',
 }) => {
-  // Brand-approved colors only
+  // Brand-approved colors by input type
   const bgColor =
     highlight === 'bank'
-      ? '#EAEBED'           // Light Gray for bank inputs
+      ? 'rgba(123, 92, 255, 0.08)' // Subtle purple tint — bank-provided
       : highlight === 'locked'
-      ? '#EAEBED'           // Light Gray for locked
-      : 'rgba(94, 0, 255, 0.04)'; // Very subtle Grapril tint for editable
+      ? '#EAEBED'                    // Light Gray — locked
+      : 'rgba(94, 0, 255, 0.04)';   // Very subtle Grapril tint — editable
 
   const borderColor =
     highlight === 'bank'
-      ? '#CBC9E6'           // Light Lilac border for bank
+      ? '#7B5CFF'           // Medium Purple border — bank-provided
       : highlight === 'locked'
-      ? '#CBC9E6'           // Light Lilac border for locked
-      : '#CBC9E6';          // Light Lilac border for editable
+      ? '#CBC9E6'           // Light Lilac border — locked
+      : '#CBC9E6';          // Light Lilac border — editable
 
   const displayValue = () => {
     if (format === 'percent') {

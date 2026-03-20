@@ -187,6 +187,31 @@ const InputsPanel: React.FC<InputsPanelProps> = ({ inputs, onInputChange, onRese
         </div>
       </div>
 
+      {/* Input type legend */}
+      <div className="flex items-center gap-4 text-xs px-2">
+        <div className="flex items-center gap-1.5">
+          <span
+            className="inline-block rounded"
+            style={{ width: 12, height: 12, backgroundColor: 'rgba(94, 0, 255, 0.04)', border: '1.5px solid #CBC9E6' }}
+          />
+          <span style={{ color: '#3A3B4D' }}>Editable</span>
+        </div>
+        <div className="flex items-center gap-1.5">
+          <span
+            className="inline-block rounded"
+            style={{ width: 12, height: 12, backgroundColor: 'rgba(123, 92, 255, 0.08)', border: '1.5px solid #7B5CFF' }}
+          />
+          <span style={{ color: '#7B5CFF', fontWeight: 600 }}>Ask bank</span>
+        </div>
+        <div className="flex items-center gap-1.5">
+          <span
+            className="inline-block rounded"
+            style={{ width: 12, height: 12, backgroundColor: '#EAEBED', border: '1.5px solid #CBC9E6' }}
+          />
+          <span style={{ color: '#3A3B4D' }}>Locked</span>
+        </div>
+      </div>
+
       {/* Scenario column headers */}
       <div className="grid grid-cols-[180px_1fr_1fr_1fr] gap-3 px-2">
         <div />
@@ -222,7 +247,23 @@ const InputsPanel: React.FC<InputsPanelProps> = ({ inputs, onInputChange, onRese
               {section.fields.map((field) => (
                 <div key={field.key} className="grid grid-cols-[180px_1fr_1fr_1fr] gap-3 items-end">
                   <div className="flex items-center gap-1.5 text-xs font-medium py-2" style={{ color: '#3A3B4D' }}>
-                    {field.label}
+                    <span className="truncate">{field.label}</span>
+                    {field.highlight === 'bank' && (
+                      <span
+                        className="shrink-0 text-white font-bold uppercase rounded-full px-1.5 py-0.5"
+                        style={{ fontSize: '0.5rem', backgroundColor: '#7B5CFF', letterSpacing: '0.06em' }}
+                      >
+                        Bank
+                      </span>
+                    )}
+                    {field.locked && !field.highlight?.startsWith('bank') && (
+                      <span
+                        className="shrink-0 font-bold uppercase rounded-full px-1.5 py-0.5"
+                        style={{ fontSize: '0.5rem', color: '#3A3B4D', backgroundColor: '#EAEBED', letterSpacing: '0.06em' }}
+                      >
+                        Locked
+                      </span>
+                    )}
                     {SOURCE_META[field.key] && (
                       <SourceTooltip info={SOURCE_META[field.key]!} />
                     )}
