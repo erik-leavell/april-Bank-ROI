@@ -34,7 +34,11 @@ const InputField: React.FC<InputFieldProps> = ({
     highlight === 'bank' ? '#E9CD62' : highlight === 'locked' ? '#d4cfc7' : '#CBC9E6';
 
   const displayValue = () => {
-    if (format === 'percent') return (value * 100).toFixed(step < 0.01 ? 2 : step < 0.001 ? 3 : 1);
+    if (format === 'percent') {
+      const pctVal = value * 100;
+      const decimals = step < 0.001 ? 3 : step < 0.01 ? 2 : 1;
+      return pctVal.toFixed(decimals);
+    }
     if (format === 'currency') return value.toLocaleString('en-US', { maximumFractionDigits: 0 });
     if (format === 'decimal') return value.toFixed(2);
     return value.toLocaleString('en-US', { maximumFractionDigits: 0 });
@@ -79,10 +83,9 @@ const InputField: React.FC<InputFieldProps> = ({
         >
           {locked ? (
             <span className="text-gray-600">
-              {format === 'percent' && <span>%</span>}
               {format === 'currency' && <span>$</span>}
               {format === 'percent'
-                ? (value * 100).toFixed(1)
+                ? `${(value * 100).toFixed(1)}%`
                 : format === 'currency'
                 ? value.toLocaleString()
                 : value}
