@@ -34,6 +34,9 @@ const FunnelPanel: React.FC<FunnelPanelProps> = ({ results, activeScenario }) =>
 
   const maxVal = funnelStages[0].value;
 
+  // Brand-approved funnel colors
+  const funnelColors = ['#5E00FF', '#7B5CFF', '#CBC9E6', '#210F4B', '#3A3B4D'];
+
   // Table data
   const headers = ['Metric', 'Year 1', 'Year 2', 'Year 3', 'Year 4', 'Year 5'];
   const rows = [
@@ -71,7 +74,7 @@ const FunnelPanel: React.FC<FunnelPanelProps> = ({ results, activeScenario }) =>
     },
   ];
 
-  // Chart data - engaged vs filers over 5 years
+  // Chart data
   const chartData = r.years.map((y, i) => ({
     name: `Year ${i + 1}`,
     Engaged: y.funnel.engagedCustomers,
@@ -81,22 +84,27 @@ const FunnelPanel: React.FC<FunnelPanelProps> = ({ results, activeScenario }) =>
 
   return (
     <div className="p-6 max-w-7xl mx-auto space-y-6">
-      <h2 className="text-lg font-bold" style={{ color: '#475464' }}>
+      <h2
+        className="text-lg font-bold"
+        style={{ color: '#1A2040', fontFamily: "'Inter Tight', 'Inter', sans-serif" }}
+      >
         Engagement Funnel - {scenarioLabel} Case
       </h2>
 
       {/* Visual funnel */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-        <h3 className="text-sm font-semibold mb-4" style={{ color: '#475464' }}>
+      <div className="bg-white rounded-xl shadow-sm p-6">
+        <h3
+          className="text-sm font-semibold mb-4"
+          style={{ color: '#1A2040', fontFamily: "'Inter Tight', 'Inter', sans-serif" }}
+        >
           Year 1 Funnel
         </h3>
         <div className="space-y-3 max-w-2xl mx-auto">
           {funnelStages.map((stage, i) => {
             const width = Math.max((stage.value / maxVal) * 100, 8);
-            const colors = ['#5E00FF', '#7B33FF', '#9B66FF', '#CBC9E6', '#E9CD62'];
             return (
               <div key={i} className="flex items-center gap-3">
-                <div className="w-36 text-right text-xs font-medium" style={{ color: '#475464' }}>
+                <div className="w-36 text-right text-xs font-medium" style={{ color: '#3A3B4D' }}>
                   {stage.label}
                 </div>
                 <div className="flex-1 relative">
@@ -104,7 +112,7 @@ const FunnelPanel: React.FC<FunnelPanelProps> = ({ results, activeScenario }) =>
                     className="h-8 rounded-r-lg flex items-center justify-end pr-3 transition-all"
                     style={{
                       width: `${width}%`,
-                      backgroundColor: colors[i],
+                      backgroundColor: funnelColors[i],
                       minWidth: 80,
                     }}
                   >
@@ -120,20 +128,23 @@ const FunnelPanel: React.FC<FunnelPanelProps> = ({ results, activeScenario }) =>
       </div>
 
       {/* Bar chart */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
-        <h3 className="text-sm font-semibold mb-4" style={{ color: '#475464' }}>
+      <div className="bg-white rounded-xl shadow-sm p-5">
+        <h3
+          className="text-sm font-semibold mb-4"
+          style={{ color: '#1A2040', fontFamily: "'Inter Tight', 'Inter', sans-serif" }}
+        >
           Volume Growth Over 5 Years
         </h3>
         <ResponsiveContainer width="100%" height={300}>
           <BarChart data={chartData}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-            <XAxis dataKey="name" tick={{ fontSize: 12, fill: '#475464' }} />
-            <YAxis tick={{ fontSize: 11, fill: '#475464' }} tickFormatter={(v) => formatNumber(v, true)} />
+            <CartesianGrid strokeDasharray="3 3" stroke="#EAEBED" />
+            <XAxis dataKey="name" tick={{ fontSize: 12, fill: '#3A3B4D' }} />
+            <YAxis tick={{ fontSize: 11, fill: '#3A3B4D' }} tickFormatter={(v) => formatNumber(v, true)} />
             <Tooltip formatter={tooltipNumber} />
             <Legend wrapperStyle={{ fontSize: 11 }} />
             <Bar dataKey="Engaged" fill="#5E00FF" />
-            <Bar dataKey="Filers" fill="#9B66FF" />
-            <Bar dataKey="DD Switchers (Cumul.)" fill="#E9CD62" />
+            <Bar dataKey="Filers" fill="#7B5CFF" />
+            <Bar dataKey="DD Switchers (Cumul.)" fill="#CBC9E6" />
           </BarChart>
         </ResponsiveContainer>
       </div>

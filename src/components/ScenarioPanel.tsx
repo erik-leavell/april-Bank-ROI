@@ -18,9 +18,9 @@ interface ScenarioPanelProps {
 
 const ScenarioPanel: React.FC<ScenarioPanelProps> = ({ results }) => {
   const scenarios: { key: ScenarioKey; label: string; color: string }[] = [
-    { key: 'bear', label: 'Bear', color: '#893326' },
+    { key: 'bear', label: 'Bear', color: '#3A3B4D' },
     { key: 'base', label: 'Base', color: '#5E00FF' },
-    { key: 'bull', label: 'Bull', color: '#135948' },
+    { key: 'bull', label: 'Bull', color: '#210F4B' },
   ];
 
   // Summary comparison
@@ -110,27 +110,30 @@ const ScenarioPanel: React.FC<ScenarioPanelProps> = ({ results }) => {
 
   return (
     <div className="p-6 max-w-7xl mx-auto space-y-6">
-      <h2 className="text-lg font-bold" style={{ color: '#475464' }}>
+      <h2
+        className="text-lg font-bold"
+        style={{ color: '#1A2040', fontFamily: "'Inter Tight', 'Inter', sans-serif" }}
+      >
         Scenario Comparison: Bear vs Base vs Bull
       </h2>
 
       {/* Key metrics side by side */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-        <div className="px-5 py-3" style={{ backgroundColor: '#475464' }}>
+      <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+        <div className="px-5 py-3" style={{ backgroundColor: '#1A2040' }}>
           <h3 className="text-sm font-semibold text-white">Key Metrics Comparison</h3>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-gray-200">
-                <th className="text-left px-5 py-3 font-semibold" style={{ color: '#475464' }}>
+              <tr style={{ borderBottom: '2px solid #EAEBED' }}>
+                <th className="text-left px-5 py-3 font-semibold" style={{ color: '#1A2040' }}>
                   Metric
                 </th>
                 {scenarios.map((s) => (
                   <th key={s.key} className="text-right px-5 py-3">
                     <span
                       className="text-xs font-bold uppercase px-2 py-0.5 rounded-full text-white"
-                      style={{ backgroundColor: s.color }}
+                      style={{ backgroundColor: s.color, letterSpacing: '0.08em' }}
                     >
                       {s.label}
                     </span>
@@ -142,14 +145,18 @@ const ScenarioPanel: React.FC<ScenarioPanelProps> = ({ results }) => {
               {summaryRows.map((row, idx) => (
                 <tr
                   key={idx}
-                  className="border-b border-gray-50"
                   style={{
-                    backgroundColor: row.highlight ? '#F7F5FB' : idx % 2 === 1 ? '#FAFAFE' : 'white',
+                    backgroundColor: row.highlight
+                      ? 'rgba(94, 0, 255, 0.06)'
+                      : idx % 2 === 1
+                      ? '#F5F5F7'
+                      : 'white',
+                    borderBottom: '1px solid #EAEBED',
                   }}
                 >
                   <td
                     className={`px-5 py-2.5 ${row.bold ? 'font-semibold' : ''}`}
-                    style={{ color: row.highlight ? '#5E00FF' : '#475464' }}
+                    style={{ color: row.highlight ? '#5E00FF' : '#1A2040' }}
                   >
                     {row.label}
                   </td>
@@ -160,7 +167,7 @@ const ScenarioPanel: React.FC<ScenarioPanelProps> = ({ results }) => {
                         key={i}
                         className={`text-right px-5 py-2.5 ${row.bold ? 'font-semibold' : ''}`}
                         style={{
-                          color: row.highlight ? '#5E00FF' : isNeg ? '#893326' : '#1a1a2e',
+                          color: row.highlight ? '#5E00FF' : isNeg ? '#3A3B4D' : '#1A2040',
                         }}
                       >
                         {v}
@@ -175,22 +182,22 @@ const ScenarioPanel: React.FC<ScenarioPanelProps> = ({ results }) => {
       </div>
 
       {/* 5-Year Value Area totals */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-        <div className="px-5 py-3" style={{ backgroundColor: '#475464' }}>
+      <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+        <div className="px-5 py-3" style={{ backgroundColor: '#1A2040' }}>
           <h3 className="text-sm font-semibold text-white">5-Year Value Area Totals</h3>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-gray-200">
-                <th className="text-left px-5 py-3 font-semibold" style={{ color: '#475464' }}>
+              <tr style={{ borderBottom: '2px solid #EAEBED' }}>
+                <th className="text-left px-5 py-3 font-semibold" style={{ color: '#1A2040' }}>
                   Value Area
                 </th>
                 {scenarios.map((s) => (
                   <th key={s.key} className="text-right px-5 py-3">
                     <span
                       className="text-xs font-bold uppercase px-2 py-0.5 rounded-full text-white"
-                      style={{ backgroundColor: s.color }}
+                      style={{ backgroundColor: s.color, letterSpacing: '0.08em' }}
                     >
                       {s.label}
                     </span>
@@ -204,14 +211,18 @@ const ScenarioPanel: React.FC<ScenarioPanelProps> = ({ results }) => {
                 return (
                   <tr
                     key={idx}
-                    className="border-b border-gray-50"
                     style={{
-                      backgroundColor: isLast ? '#F7F5FB' : idx % 2 === 1 ? '#FAFAFE' : 'white',
+                      backgroundColor: isLast
+                        ? 'rgba(94, 0, 255, 0.06)'
+                        : idx % 2 === 1
+                        ? '#F5F5F7'
+                        : 'white',
+                      borderBottom: '1px solid #EAEBED',
                     }}
                   >
                     <td
                       className={`px-5 py-2.5 ${isLast ? 'font-semibold' : ''}`}
-                      style={{ color: isLast ? '#5E00FF' : '#475464' }}
+                      style={{ color: isLast ? '#5E00FF' : '#1A2040' }}
                     >
                       {row.label}
                     </td>
@@ -219,7 +230,7 @@ const ScenarioPanel: React.FC<ScenarioPanelProps> = ({ results }) => {
                       <td
                         key={i}
                         className={`text-right px-5 py-2.5 ${isLast ? 'font-semibold' : ''}`}
-                        style={{ color: v.startsWith('-') ? '#893326' : '#1a1a2e' }}
+                        style={{ color: v.startsWith('-') ? '#3A3B4D' : '#1A2040' }}
                       >
                         {v}
                       </td>
@@ -234,38 +245,44 @@ const ScenarioPanel: React.FC<ScenarioPanelProps> = ({ results }) => {
 
       {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
-          <h3 className="text-sm font-semibold mb-4" style={{ color: '#475464' }}>
+        <div className="bg-white rounded-xl shadow-sm p-5">
+          <h3
+            className="text-sm font-semibold mb-4"
+            style={{ color: '#1A2040', fontFamily: "'Inter Tight', 'Inter', sans-serif" }}
+          >
             Cumulative Net ROI
           </h3>
           <ResponsiveContainer width="100%" height={320}>
             <LineChart data={cumulativeData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-              <XAxis dataKey="name" tick={{ fontSize: 12, fill: '#475464' }} />
-              <YAxis tick={{ fontSize: 11, fill: '#475464' }} tickFormatter={(v) => formatCurrency(v, true)} />
+              <CartesianGrid strokeDasharray="3 3" stroke="#EAEBED" />
+              <XAxis dataKey="name" tick={{ fontSize: 12, fill: '#3A3B4D' }} />
+              <YAxis tick={{ fontSize: 11, fill: '#3A3B4D' }} tickFormatter={(v) => formatCurrency(v, true)} />
               <Tooltip formatter={tooltipCurrency} />
               <Legend wrapperStyle={{ fontSize: 11 }} />
-              <Line type="monotone" dataKey="Bear" stroke="#893326" strokeWidth={2} dot={{ r: 4 }} />
+              <Line type="monotone" dataKey="Bear" stroke="#3A3B4D" strokeWidth={2} dot={{ r: 4 }} />
               <Line type="monotone" dataKey="Base" stroke="#5E00FF" strokeWidth={2} dot={{ r: 4 }} />
-              <Line type="monotone" dataKey="Bull" stroke="#135948" strokeWidth={2} dot={{ r: 4 }} />
+              <Line type="monotone" dataKey="Bull" stroke="#210F4B" strokeWidth={2} dot={{ r: 4 }} />
             </LineChart>
           </ResponsiveContainer>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
-          <h3 className="text-sm font-semibold mb-4" style={{ color: '#475464' }}>
+        <div className="bg-white rounded-xl shadow-sm p-5">
+          <h3
+            className="text-sm font-semibold mb-4"
+            style={{ color: '#1A2040', fontFamily: "'Inter Tight', 'Inter', sans-serif" }}
+          >
             Annual Net ROI
           </h3>
           <ResponsiveContainer width="100%" height={320}>
             <LineChart data={annualData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-              <XAxis dataKey="name" tick={{ fontSize: 12, fill: '#475464' }} />
-              <YAxis tick={{ fontSize: 11, fill: '#475464' }} tickFormatter={(v) => formatCurrency(v, true)} />
+              <CartesianGrid strokeDasharray="3 3" stroke="#EAEBED" />
+              <XAxis dataKey="name" tick={{ fontSize: 12, fill: '#3A3B4D' }} />
+              <YAxis tick={{ fontSize: 11, fill: '#3A3B4D' }} tickFormatter={(v) => formatCurrency(v, true)} />
               <Tooltip formatter={tooltipCurrency} />
               <Legend wrapperStyle={{ fontSize: 11 }} />
-              <Line type="monotone" dataKey="Bear" stroke="#893326" strokeWidth={2} dot={{ r: 4 }} />
+              <Line type="monotone" dataKey="Bear" stroke="#3A3B4D" strokeWidth={2} dot={{ r: 4 }} />
               <Line type="monotone" dataKey="Base" stroke="#5E00FF" strokeWidth={2} dot={{ r: 4 }} />
-              <Line type="monotone" dataKey="Bull" stroke="#135948" strokeWidth={2} dot={{ r: 4 }} />
+              <Line type="monotone" dataKey="Bull" stroke="#210F4B" strokeWidth={2} dot={{ r: 4 }} />
             </LineChart>
           </ResponsiveContainer>
         </div>

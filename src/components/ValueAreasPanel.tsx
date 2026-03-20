@@ -18,14 +18,15 @@ interface ValueAreasPanelProps {
   activeScenario: ScenarioKey;
 }
 
+// Brand-approved colors only
 const VA_KEYS = [
   { key: 'depositNII', label: 'VA1: Deposit NII', color: '#5E00FF' },
-  { key: 'ddSwitching', label: 'VA2: DD Switching', color: '#7B33FF' },
-  { key: 'ral', label: 'VA3: RAL', color: '#9B66FF' },
-  { key: 'premiumFiling', label: 'VA4: Premium Filing', color: '#E9CD62' },
-  { key: 'crossSell', label: 'VA5: Cross-sell', color: '#135948' },
-  { key: 'retention', label: 'VA6: Retention/LTV', color: '#475464' },
-  { key: 'interchange', label: 'VA7: Interchange', color: '#CBC9E6' },
+  { key: 'ddSwitching', label: 'VA2: DD Switching', color: '#7B5CFF' },
+  { key: 'ral', label: 'VA3: RAL', color: '#CBC9E6' },
+  { key: 'premiumFiling', label: 'VA4: Premium Filing', color: '#210F4B' },
+  { key: 'crossSell', label: 'VA5: Cross-sell', color: '#3A3B4D' },
+  { key: 'retention', label: 'VA6: Retention/LTV', color: '#1A2040' },
+  { key: 'interchange', label: 'VA7: Interchange', color: '#EAEBED' },
 ] as const;
 
 const ValueAreasPanel: React.FC<ValueAreasPanelProps> = ({ results, activeScenario }) => {
@@ -64,23 +65,19 @@ const ValueAreasPanel: React.FC<ValueAreasPanelProps> = ({ results, activeScenar
   // Individual VA detail cards
   const vaDetails = VA_KEYS.map((va) => {
     const y1Val = r.years[0].valueAreas[va.key as keyof typeof r.years[0]['valueAreas']] as number;
-    const y5Val = r.years[4].valueAreas[va.key as keyof typeof r.years[4]['valueAreas']] as number;
     const fiveYearTotal = r.years.reduce(
       (sum, y) => sum + (y.valueAreas[va.key as keyof typeof y.valueAreas] as number),
       0
     );
-    return {
-      ...va,
-      y1Val,
-      y5Val,
-      fiveYearTotal,
-      growth: y1Val !== 0 ? ((y5Val - y1Val) / Math.abs(y1Val)) * 100 : 0,
-    };
+    return { ...va, y1Val, fiveYearTotal };
   });
 
   return (
     <div className="p-6 max-w-7xl mx-auto space-y-6">
-      <h2 className="text-lg font-bold" style={{ color: '#475464' }}>
+      <h2
+        className="text-lg font-bold"
+        style={{ color: '#1A2040', fontFamily: "'Inter Tight', 'Inter', sans-serif" }}
+      >
         Value Areas - {scenarioLabel} Case
       </h2>
 
@@ -92,13 +89,13 @@ const ValueAreasPanel: React.FC<ValueAreasPanelProps> = ({ results, activeScenar
             className="bg-white rounded-xl shadow-sm border-t-4 p-4"
             style={{ borderTopColor: va.color }}
           >
-            <p className="text-xs font-medium" style={{ color: '#475464' }}>
+            <p className="text-xs font-medium" style={{ color: '#3A3B4D' }}>
               {va.label.replace(/VA\d: /, '')}
             </p>
-            <p className="text-lg font-bold mt-1" style={{ color: va.y1Val >= 0 ? '#135948' : '#893326' }}>
+            <p className="text-lg font-bold mt-1" style={{ color: va.y1Val >= 0 ? '#5E00FF' : '#3A3B4D' }}>
               {formatCurrency(va.y1Val, true)}
             </p>
-            <p className="text-xs mt-1" style={{ color: '#475464' }}>
+            <p className="text-xs mt-1" style={{ color: '#3A3B4D' }}>
               5yr: {formatCurrency(va.fiveYearTotal, true)}
             </p>
           </div>
@@ -106,16 +103,19 @@ const ValueAreasPanel: React.FC<ValueAreasPanelProps> = ({ results, activeScenar
       </div>
 
       {/* Stacked bar chart */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
-        <h3 className="text-sm font-semibold mb-4" style={{ color: '#475464' }}>
+      <div className="bg-white rounded-xl shadow-sm p-5">
+        <h3
+          className="text-sm font-semibold mb-4"
+          style={{ color: '#1A2040', fontFamily: "'Inter Tight', 'Inter', sans-serif" }}
+        >
           Value Area Composition by Year
         </h3>
         <ResponsiveContainer width="100%" height={350}>
           <BarChart data={chartData}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-            <XAxis dataKey="name" tick={{ fontSize: 12, fill: '#475464' }} />
+            <CartesianGrid strokeDasharray="3 3" stroke="#EAEBED" />
+            <XAxis dataKey="name" tick={{ fontSize: 12, fill: '#3A3B4D' }} />
             <YAxis
-              tick={{ fontSize: 11, fill: '#475464' }}
+              tick={{ fontSize: 11, fill: '#3A3B4D' }}
               tickFormatter={(v) => formatCurrency(v, true)}
             />
             <Tooltip formatter={tooltipCurrency} />

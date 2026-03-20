@@ -1,23 +1,21 @@
 @import "tailwindcss";
 
 @theme {
+  --color-brand-purple: #210F4B;
+  --color-dark-charcoal: #3A3B4D;
+  --color-deep-navy: #1A2040;
   --color-grapril: #5E00FF;
-  --color-grapril-light: #7B33FF;
-  --color-slate-brand: #475464;
-  --color-mustard: #E9CD62;
-  --color-dusty-purple: #CBC9E6;
-  --color-beige: #F0EBE3;
-  --color-hunter-green: #135948;
-  --color-hunter-green-light: #D4F5E9;
-  --color-tuscan-red: #893326;
-  --color-light-lilac: #F7F5FB;
+  --color-medium-purple: #7B5CFF;
+  --color-light-lilac: #CBC9E6;
+  --color-light-gray: #EAEBED;
   --font-sans: 'Inter', system-ui, sans-serif;
+  --font-tight: 'Inter Tight', 'Inter', system-ui, sans-serif;
 }
 
 body {
   font-family: var(--font-sans);
-  background: #ffffff;
-  color: #1a1a2e;
+  background: #EAEBED;
+  color: #1A2040;
   margin: 0;
 }
 
@@ -26,7 +24,7 @@ input[type="range"] {
   appearance: none;
   height: 6px;
   border-radius: 3px;
-  background: #e2e0f0;
+  background: #EAEBED;
   outline: none;
 }
 
@@ -39,7 +37,7 @@ input[type="range"]::-webkit-slider-thumb {
   background: #5E00FF;
   cursor: pointer;
   border: 2px solid white;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  box-shadow: 0 1px 4px rgba(33, 15, 75, 0.3);
 }
 
 input[type="range"]::-moz-range-thumb {
@@ -49,7 +47,7 @@ input[type="range"]::-moz-range-thumb {
   background: #5E00FF;
   cursor: pointer;
   border: 2px solid white;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  box-shadow: 0 1px 4px rgba(33, 15, 75, 0.3);
 }
 
 /* Custom scrollbar */
@@ -58,9 +56,9 @@ input[type="range"]::-moz-range-thumb {
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #f7f5fb;
+  background: #EAEBED;
 }
 ::-webkit-scrollbar-thumb {
-  background: #cbc9e6;
+  background: #CBC9E6;
   border-radius: 3px;
 }

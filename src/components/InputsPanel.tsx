@@ -98,8 +98,8 @@ const SECTIONS: SectionConfig[] = [
   {
     title: 'Costs',
     fields: [
-      { key: 'aprilPlatformFee', label: 'April Platform Fee ($/yr)', min: 0, max: 5000000, step: 100000, format: 'currency' },
-      { key: 'aprilPerFilingFee', label: 'April Per-Filing Fee ($)', min: 0, max: 50, step: 1, format: 'currency' },
+      { key: 'aprilPlatformFee', label: 'april Platform Fee ($/yr)', min: 0, max: 5000000, step: 100000, format: 'currency' },
+      { key: 'aprilPerFilingFee', label: 'april Per-Filing Fee ($)', min: 0, max: 50, step: 1, format: 'currency' },
       { key: 'bankMarketingPerEngaged', label: 'Bank Marketing ($/engaged)', min: 0, max: 10, step: 0.5, format: 'currency' },
       { key: 'bankOpsCostPerYear', label: 'Bank Ops Cost ($/yr)', min: 0, max: 10000000, step: 100000, format: 'currency' },
       { key: 'integrationAmortPerYear', label: 'Integration (amort $/yr)', min: 0, max: 3000000, step: 50000, format: 'currency' },
@@ -133,30 +133,33 @@ const InputsPanel: React.FC<InputsPanelProps> = ({ inputs, onInputChange, onRese
       {/* Header */}
       <div className="flex items-center justify-between mb-2">
         <div>
-          <h2 className="text-lg font-bold" style={{ color: '#475464' }}>
+          <h2
+            className="text-lg font-bold"
+            style={{ color: '#1A2040', fontFamily: "'Inter Tight', 'Inter', sans-serif" }}
+          >
             Model Inputs
           </h2>
-          <p className="text-xs text-gray-500">
+          <p className="text-xs" style={{ color: '#3A3B4D' }}>
             Adjust inputs across Bear, Base, and Bull scenarios
           </p>
         </div>
         <div className="flex items-center gap-3">
           {/* Bank Name */}
           <div className="flex items-center gap-2">
-            <label className="text-xs font-medium" style={{ color: '#475464' }}>Bank Name:</label>
+            <label className="text-xs font-medium" style={{ color: '#3A3B4D' }}>Bank Name:</label>
             <input
               type="text"
               value={inputs.base.bankName}
               onChange={(e) => {
                 scenarios.forEach((s) => onInputChange(s, 'bankName', e.target.value));
               }}
-              className="border border-[#E9CD62] bg-[#FEFBF0] rounded px-2 py-1 text-sm"
-              style={{ width: 160 }}
+              className="border rounded px-2 py-1 text-sm"
+              style={{ width: 160, borderColor: '#CBC9E6', backgroundColor: '#EAEBED' }}
             />
           </div>
           {/* FTP/NIM toggle */}
           <div className="flex items-center gap-2">
-            <label className="text-xs font-medium" style={{ color: '#475464' }}>Rate:</label>
+            <label className="text-xs font-medium" style={{ color: '#3A3B4D' }}>Rate:</label>
             <button
               onClick={() => {
                 const newVal = !inputs.base.useFTP;
@@ -164,7 +167,7 @@ const InputsPanel: React.FC<InputsPanelProps> = ({ inputs, onInputChange, onRese
               }}
               className="text-xs px-3 py-1 rounded-full font-semibold border transition-all"
               style={{
-                backgroundColor: inputs.base.useFTP ? '#5E00FF' : '#F7F5FB',
+                backgroundColor: inputs.base.useFTP ? '#5E00FF' : 'rgba(94, 0, 255, 0.06)',
                 color: inputs.base.useFTP ? 'white' : '#5E00FF',
                 borderColor: '#5E00FF',
               }}
@@ -174,7 +177,8 @@ const InputsPanel: React.FC<InputsPanelProps> = ({ inputs, onInputChange, onRese
           </div>
           <button
             onClick={onReset}
-            className="px-4 py-1.5 rounded-lg text-xs font-semibold bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors"
+            className="px-4 py-1.5 rounded-lg text-xs font-semibold transition-colors"
+            style={{ backgroundColor: '#EAEBED', color: '#3A3B4D' }}
           >
             Reset to Defaults
           </button>
@@ -187,9 +191,10 @@ const InputsPanel: React.FC<InputsPanelProps> = ({ inputs, onInputChange, onRese
         {scenarios.map((s) => (
           <div
             key={s}
-            className="text-center text-xs font-bold uppercase tracking-wider py-1 rounded-t"
+            className="text-center text-xs font-bold uppercase py-1 rounded-t"
             style={{
-              color: s === 'bear' ? '#893326' : s === 'base' ? '#5E00FF' : '#135948',
+              color: s === 'bear' ? '#3A3B4D' : s === 'base' ? '#5E00FF' : '#210F4B',
+              letterSpacing: '0.08em',
             }}
           >
             {s}
@@ -199,20 +204,22 @@ const InputsPanel: React.FC<InputsPanelProps> = ({ inputs, onInputChange, onRese
 
       {/* Sections */}
       {SECTIONS.map((section) => (
-        <div key={section.title} className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+        <div key={section.title} className="bg-white rounded-xl shadow-sm overflow-hidden">
           <button
             onClick={() => toggleSection(section.title)}
             className="w-full flex items-center justify-between px-5 py-3 text-left"
-            style={{ backgroundColor: '#475464' }}
+            style={{ backgroundColor: '#210F4B' }}
           >
             <span className="text-sm font-semibold text-white">{section.title}</span>
-            <span className="text-white text-lg">{openSections[section.title] ? '-' : '+'}</span>
+            <span className="text-white text-lg" style={{ opacity: 0.6 }}>
+              {openSections[section.title] ? '-' : '+'}
+            </span>
           </button>
           {openSections[section.title] && (
             <div className="px-5 py-4 space-y-4">
               {section.fields.map((field) => (
                 <div key={field.key} className="grid grid-cols-[220px_1fr_1fr_1fr] gap-3 items-end">
-                  <div className="text-xs font-medium py-2" style={{ color: '#475464' }}>
+                  <div className="text-xs font-medium py-2" style={{ color: '#3A3B4D' }}>
                     {field.label}
                   </div>
                   {scenarios.map((s) => (

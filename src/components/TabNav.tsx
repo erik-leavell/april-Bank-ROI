@@ -18,8 +18,8 @@ const TABS: { id: TabId; label: string }[] = [
 
 const TabNav: React.FC<TabNavProps> = ({ activeTab, onTabChange }) => {
   return (
-    <nav className="bg-white border-b border-gray-200 px-6">
-      <div className="flex gap-1">
+    <nav className="bg-white border-b" style={{ borderColor: '#EAEBED' }}>
+      <div className="flex gap-1 px-8">
         {TABS.map((tab) => (
           <button
             key={tab.id}
@@ -27,7 +27,7 @@ const TabNav: React.FC<TabNavProps> = ({ activeTab, onTabChange }) => {
             className={`px-4 py-3 text-sm font-medium transition-colors relative ${
               activeTab === tab.id
                 ? 'text-[#5E00FF]'
-                : 'text-[#475464] hover:text-[#5E00FF]'
+                : 'text-[#3A3B4D] hover:text-[#5E00FF]'
             }`}
           >
             {tab.label}

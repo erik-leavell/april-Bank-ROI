@@ -44,7 +44,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
+    <div className="min-h-screen flex flex-col" style={{ backgroundColor: '#EAEBED' }}>
       <Header bankName={inputs.base.bankName} />
       <TabNav activeTab={activeTab} onTabChange={setActiveTab} />
 
@@ -75,14 +75,21 @@ const App: React.FC = () => {
         {activeTab === 'scenario' && <ScenarioPanel results={results} />}
       </main>
 
-      <footer className="border-t border-gray-200 bg-white px-6 py-3 text-center">
-        <span className="text-xs" style={{ color: '#475464' }}>
-          Powered by{' '}
-          <span className="font-bold" style={{ color: '#5E00FF' }}>
-            April
-          </span>{' '}
-          | Confidential
-        </span>
+      <footer
+        className="px-8 py-3 flex items-center justify-between"
+        style={{ backgroundColor: '#210F4B' }}
+      >
+        <div className="flex items-center gap-4">
+          <span className="text-xs font-bold text-white" style={{ letterSpacing: '-0.02em' }}>
+            april
+          </span>
+          <span
+            className="text-xs font-medium uppercase"
+            style={{ color: 'rgba(255,255,255,0.4)', letterSpacing: '0.08em', fontSize: '0.62rem' }}
+          >
+            Confidential and Proprietary
+          </span>
+        </div>
       </footer>
     </div>
   );

@@ -21,20 +21,28 @@ interface DashboardProps {
   onScenarioChange: (s: ScenarioKey) => void;
 }
 
+// Brand-approved chart colors only
 const VA_LABELS = [
   { key: 'depositNII', label: 'Deposit NII', color: '#5E00FF' },
-  { key: 'ddSwitching', label: 'DD Switching', color: '#7B33FF' },
-  { key: 'ral', label: 'RAL', color: '#9B66FF' },
-  { key: 'premiumFiling', label: 'Premium Filing', color: '#E9CD62' },
-  { key: 'crossSell', label: 'Cross-sell', color: '#135948' },
-  { key: 'retention', label: 'Retention/LTV', color: '#475464' },
-  { key: 'interchange', label: 'Interchange', color: '#CBC9E6' },
+  { key: 'ddSwitching', label: 'DD Switching', color: '#7B5CFF' },
+  { key: 'ral', label: 'RAL', color: '#CBC9E6' },
+  { key: 'premiumFiling', label: 'Premium Filing', color: '#210F4B' },
+  { key: 'crossSell', label: 'Cross-sell', color: '#3A3B4D' },
+  { key: 'retention', label: 'Retention/LTV', color: '#1A2040' },
+  { key: 'interchange', label: 'Interchange', color: '#EAEBED' },
 ];
+
+// Scenario colors: brand palette only
+const SCENARIO_COLORS: Record<ScenarioKey, string> = {
+  bear: '#3A3B4D',
+  base: '#5E00FF',
+  bull: '#210F4B',
+};
 
 const Dashboard: React.FC<DashboardProps> = ({ results, activeScenario, onScenarioChange }) => {
   const scenarios: ScenarioKey[] = ['bear', 'base', 'bull'];
 
-  // Value area breakdown chart data (Base scenario, all 5 years)
+  // Value area breakdown chart data
   const vaBreakdownData = Array.from({ length: 5 }, (_, y) => {
     const va = results[activeScenario].years[y].valueAreas;
     return {
@@ -61,7 +69,7 @@ const Dashboard: React.FC<DashboardProps> = ({ results, activeScenario, onScenar
     <div className="p-6 space-y-6 max-w-7xl mx-auto">
       {/* Scenario selector */}
       <div className="flex items-center gap-2 mb-2">
-        <span className="text-sm font-medium" style={{ color: '#475464' }}>
+        <span className="text-sm font-medium" style={{ color: '#3A3B4D' }}>
           Highlight scenario:
         </span>
         {scenarios.map((s) => (
@@ -71,9 +79,11 @@ const Dashboard: React.FC<DashboardProps> = ({ results, activeScenario, onScenar
             className={`px-3 py-1 rounded-full text-xs font-semibold capitalize transition-all ${
               activeScenario === s
                 ? 'text-white shadow-sm'
-                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                : 'text-[#3A3B4D] hover:opacity-80'
             }`}
-            style={activeScenario === s ? { backgroundColor: '#5E00FF' } : {}}
+            style={{
+              backgroundColor: activeScenario === s ? SCENARIO_COLORS[s] : '#EAEBED',
+            }}
           >
             {s}
           </button>
@@ -93,13 +103,13 @@ const Dashboard: React.FC<DashboardProps> = ({ results, activeScenario, onScenar
               }`}
               onClick={() => onScenarioChange(s)}
             >
-              <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
+              <div className="bg-white rounded-xl shadow-sm p-5">
                 <div className="flex items-center justify-between mb-3">
                   <span
                     className="text-xs font-bold uppercase tracking-wider px-2 py-0.5 rounded-full text-white"
                     style={{
-                      backgroundColor:
-                        s === 'bear' ? '#893326' : s === 'base' ? '#5E00FF' : '#135948',
+                      backgroundColor: SCENARIO_COLORS[s],
+                      letterSpacing: '0.08em',
                     }}
                   >
                     {s}
@@ -107,31 +117,33 @@ const Dashboard: React.FC<DashboardProps> = ({ results, activeScenario, onScenar
                 </div>
                 <div className="space-y-3">
                   <div>
-                    <p className="text-xs" style={{ color: '#475464' }}>5-Year Net ROI</p>
+                    <p className="text-xs" style={{ color: '#3A3B4D' }}>5-Year Net ROI</p>
                     <p
                       className="text-xl font-bold"
-                      style={{ color: r.fiveYearNetROI >= 0 ? '#135948' : '#893326' }}
+                      style={{ color: r.fiveYearNetROI >= 0 ? '#5E00FF' : '#3A3B4D' }}
                     >
                       {formatCurrency(r.fiveYearNetROI, true)}
                     </p>
                   </div>
                   <div className="flex gap-6">
                     <div>
-                      <p className="text-xs" style={{ color: '#475464' }}>Payback</p>
-                      <p className="text-sm font-semibold">{formatMonths(r.paybackMonths)}</p>
+                      <p className="text-xs" style={{ color: '#3A3B4D' }}>Payback</p>
+                      <p className="text-sm font-semibold" style={{ color: '#1A2040' }}>
+                        {formatMonths(r.paybackMonths)}
+                      </p>
                     </div>
                     <div>
-                      <p className="text-xs" style={{ color: '#475464' }}>Y1 ROI</p>
+                      <p className="text-xs" style={{ color: '#3A3B4D' }}>Y1 ROI</p>
                       <p
                         className="text-sm font-semibold"
-                        style={{ color: r.y1ROIPct >= 0 ? '#135948' : '#893326' }}
+                        style={{ color: r.y1ROIPct >= 0 ? '#5E00FF' : '#3A3B4D' }}
                       >
                         {formatPercent(r.y1ROIPct, 0)}
                       </p>
                     </div>
                     <div>
-                      <p className="text-xs" style={{ color: '#475464' }}>Y1 Gross</p>
-                      <p className="text-sm font-semibold">
+                      <p className="text-xs" style={{ color: '#3A3B4D' }}>Y1 Gross</p>
+                      <p className="text-sm font-semibold" style={{ color: '#1A2040' }}>
                         {formatCurrency(r.years[0].valueAreas.totalGross, true)}
                       </p>
                     </div>
@@ -146,16 +158,19 @@ const Dashboard: React.FC<DashboardProps> = ({ results, activeScenario, onScenar
       {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Value area breakdown */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
-          <h3 className="text-sm font-semibold mb-4" style={{ color: '#475464' }}>
+        <div className="bg-white rounded-xl shadow-sm p-5">
+          <h3
+            className="text-sm font-semibold mb-4"
+            style={{ color: '#1A2040', fontFamily: "'Inter Tight', 'Inter', sans-serif" }}
+          >
             Value Area Breakdown ({activeScenario.charAt(0).toUpperCase() + activeScenario.slice(1)} Case)
           </h3>
           <ResponsiveContainer width="100%" height={320}>
             <BarChart data={vaBreakdownData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-              <XAxis dataKey="name" tick={{ fontSize: 12, fill: '#475464' }} />
+              <CartesianGrid strokeDasharray="3 3" stroke="#EAEBED" />
+              <XAxis dataKey="name" tick={{ fontSize: 12, fill: '#3A3B4D' }} />
               <YAxis
-                tick={{ fontSize: 11, fill: '#475464' }}
+                tick={{ fontSize: 11, fill: '#3A3B4D' }}
                 tickFormatter={(v) => formatCurrency(v, true)}
               />
               <Tooltip formatter={tooltipCurrency} />
@@ -173,16 +188,19 @@ const Dashboard: React.FC<DashboardProps> = ({ results, activeScenario, onScenar
         </div>
 
         {/* Cumulative Net ROI */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
-          <h3 className="text-sm font-semibold mb-4" style={{ color: '#475464' }}>
+        <div className="bg-white rounded-xl shadow-sm p-5">
+          <h3
+            className="text-sm font-semibold mb-4"
+            style={{ color: '#1A2040', fontFamily: "'Inter Tight', 'Inter', sans-serif" }}
+          >
             Cumulative Net ROI (All Scenarios)
           </h3>
           <ResponsiveContainer width="100%" height={320}>
             <LineChart data={cumulativeData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-              <XAxis dataKey="name" tick={{ fontSize: 12, fill: '#475464' }} />
+              <CartesianGrid strokeDasharray="3 3" stroke="#EAEBED" />
+              <XAxis dataKey="name" tick={{ fontSize: 12, fill: '#3A3B4D' }} />
               <YAxis
-                tick={{ fontSize: 11, fill: '#475464' }}
+                tick={{ fontSize: 11, fill: '#3A3B4D' }}
                 tickFormatter={(v) => formatCurrency(v, true)}
               />
               <Tooltip formatter={tooltipCurrency} />
@@ -190,7 +208,7 @@ const Dashboard: React.FC<DashboardProps> = ({ results, activeScenario, onScenar
               <Line
                 type="monotone"
                 dataKey="Bear"
-                stroke="#893326"
+                stroke="#3A3B4D"
                 strokeWidth={activeScenario === 'bear' ? 3 : 1.5}
                 dot={{ r: activeScenario === 'bear' ? 5 : 3 }}
               />
@@ -204,7 +222,7 @@ const Dashboard: React.FC<DashboardProps> = ({ results, activeScenario, onScenar
               <Line
                 type="monotone"
                 dataKey="Bull"
-                stroke="#135948"
+                stroke="#210F4B"
                 strokeWidth={activeScenario === 'bull' ? 3 : 1.5}
                 dot={{ r: activeScenario === 'bull' ? 5 : 3 }}
               />
@@ -214,8 +232,11 @@ const Dashboard: React.FC<DashboardProps> = ({ results, activeScenario, onScenar
       </div>
 
       {/* Y1 Summary table */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
-        <h3 className="text-sm font-semibold mb-4" style={{ color: '#475464' }}>
+      <div className="bg-white rounded-xl shadow-sm p-5">
+        <h3
+          className="text-sm font-semibold mb-4"
+          style={{ color: '#1A2040', fontFamily: "'Inter Tight', 'Inter', sans-serif" }}
+        >
           Year 1 Summary ({activeScenario.charAt(0).toUpperCase() + activeScenario.slice(1)} Case)
         </h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">

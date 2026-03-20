@@ -23,15 +23,20 @@ const InputField: React.FC<InputFieldProps> = ({
   locked = false,
   highlight = 'editable',
 }) => {
+  // Brand-approved colors only
   const bgColor =
     highlight === 'bank'
-      ? '#FEFBF0'
+      ? '#EAEBED'           // Light Gray for bank inputs
       : highlight === 'locked'
-      ? '#F0EBE3'
-      : '#F7F5FB';
+      ? '#EAEBED'           // Light Gray for locked
+      : 'rgba(94, 0, 255, 0.04)'; // Very subtle Grapril tint for editable
 
   const borderColor =
-    highlight === 'bank' ? '#E9CD62' : highlight === 'locked' ? '#d4cfc7' : '#CBC9E6';
+    highlight === 'bank'
+      ? '#CBC9E6'           // Light Lilac border for bank
+      : highlight === 'locked'
+      ? '#CBC9E6'           // Light Lilac border for locked
+      : '#CBC9E6';          // Light Lilac border for editable
 
   const displayValue = () => {
     if (format === 'percent') {
@@ -59,7 +64,7 @@ const InputField: React.FC<InputFieldProps> = ({
 
   return (
     <div className="flex flex-col gap-1">
-      <label className="text-xs font-medium" style={{ color: '#475464' }}>
+      <label className="text-xs font-medium" style={{ color: '#3A3B4D' }}>
         {label}
       </label>
       <div className="flex items-center gap-2">
@@ -82,7 +87,7 @@ const InputField: React.FC<InputFieldProps> = ({
           style={{ backgroundColor: bgColor, borderColor }}
         >
           {locked ? (
-            <span className="text-gray-600">
+            <span style={{ color: '#3A3B4D' }}>
               {format === 'currency' && <span>$</span>}
               {format === 'percent'
                 ? `${(value * 100).toFixed(1)}%`
@@ -99,16 +104,16 @@ const InputField: React.FC<InputFieldProps> = ({
                 onChange(Math.min(Math.max(parsed, min), max));
               }}
               className="w-full bg-transparent text-right outline-none text-sm font-medium"
-              style={{ color: '#1a1a2e' }}
+              style={{ color: '#1A2040' }}
             />
           )}
           {format === 'percent' && !locked && (
-            <span className="absolute right-1 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none">
+            <span className="absolute right-1 top-1/2 -translate-y-1/2 text-xs pointer-events-none" style={{ color: '#CBC9E6' }}>
               %
             </span>
           )}
           {format === 'currency' && !locked && (
-            <span className="absolute left-1 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none">
+            <span className="absolute left-1 top-1/2 -translate-y-1/2 text-xs pointer-events-none" style={{ color: '#CBC9E6' }}>
               $
             </span>
           )}
