@@ -231,6 +231,102 @@ const Dashboard: React.FC<DashboardProps> = ({ results, activeScenario, onScenar
         </div>
       </div>
 
+      {/* Cohort LTV */}
+      <div className="bg-white rounded-xl shadow-sm p-5">
+        <h3
+          className="text-sm font-semibold mb-4"
+          style={{ color: '#1A2040', fontFamily: "'Inter Tight', 'Inter', sans-serif" }}
+        >
+          Y1 Cohort LTV — {activeScenario.charAt(0).toUpperCase() + activeScenario.slice(1)} Case
+        </h3>
+        <div className="grid grid-cols-3 gap-4 mb-4">
+          <MetricCard
+            label="Cohort LTV (5yr)"
+            value={formatCurrency(results[activeScenario].cohortLTV.cohortTotal, true)}
+            variant="positive"
+          />
+          <MetricCard
+            label="LTV per Y1 Filer"
+            value={`$${Math.round(results[activeScenario].cohortLTV.ltvPerFiler).toLocaleString()}`}
+            variant="positive"
+          />
+          <MetricCard
+            label="Y1 Completed Filers"
+            value={formatCurrency(results[activeScenario].years[0].funnel.completedFilers, true).replace('$', '')}
+            variant="default"
+            sublabel="Base for LTV calculation"
+          />
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr style={{ borderBottom: '2px solid #EAEBED' }}>
+                <th className="text-left px-3 py-2 font-semibold" style={{ color: '#1A2040' }}>Value Area</th>
+                {['Cal Y1', 'Cal Y2', 'Cal Y3', 'Cal Y4', 'Cal Y5', 'Cohort LTV'].map((h) => (
+                  <th key={h} className="text-right px-3 py-2 font-semibold" style={{ color: '#1A2040' }}>{h}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                { label: 'DD Switching', key: 'ddSwitching' as const, flat: true },
+                { label: 'Deposit NII', key: 'depositNII' as const, flat: false },
+                { label: 'RAL', key: 'ral' as const, flat: false },
+                { label: 'Premium Filing', key: 'premiumFiling' as const, flat: false },
+                { label: 'Cross-sell', key: 'crossSell' as const, flat: false },
+                { label: 'Retention', key: 'retention' as const, flat: true },
+                { label: 'Interchange', key: 'interchange' as const, flat: true },
+              ].map((va, idx) => {
+                const cohort = results[activeScenario].cohortLTV;
+                const rowTotal = cohort.years.reduce((s, yr) => s + yr[va.key], 0);
+                return (
+                  <tr
+                    key={va.key}
+                    style={{
+                      backgroundColor: idx % 2 === 1 ? '#F5F5F7' : 'white',
+                      borderBottom: '1px solid #EAEBED',
+                    }}
+                  >
+                    <td className="px-3 py-2" style={{ color: '#1A2040' }}>
+                      {va.label}
+                      {va.flat && (
+                        <span className="ml-1 text-xs" style={{ color: '#CBC9E6' }}>(flat)</span>
+                      )}
+                    </td>
+                    {cohort.years.map((yr, y) => (
+                      <td key={y} className="text-right px-3 py-2" style={{ color: '#1A2040' }}>
+                        {formatCurrency(yr[va.key], true)}
+                      </td>
+                    ))}
+                    <td className="text-right px-3 py-2 font-semibold" style={{ color: '#5E00FF' }}>
+                      {formatCurrency(rowTotal, true)}
+                    </td>
+                  </tr>
+                );
+              })}
+              <tr style={{ backgroundColor: 'rgba(94, 0, 255, 0.06)', borderBottom: '1px solid #EAEBED' }}>
+                <td className="px-3 py-2 font-semibold" style={{ color: '#5E00FF' }}>Y1 Cohort Total</td>
+                {results[activeScenario].cohortLTV.years.map((yr, y) => (
+                  <td key={y} className="text-right px-3 py-2 font-semibold" style={{ color: '#5E00FF' }}>
+                    {formatCurrency(yr.total, true)}
+                  </td>
+                ))}
+                <td className="text-right px-3 py-2 font-bold" style={{ color: '#5E00FF' }}>
+                  {formatCurrency(results[activeScenario].cohortLTV.cohortTotal, true)}
+                </td>
+              </tr>
+              <tr>
+                <td className="px-3 py-2 font-medium" style={{ color: '#3A3B4D' }}>LTV per Y1 Filer</td>
+                <td colSpan={5} />
+                <td className="text-right px-3 py-2 font-bold" style={{ color: '#5E00FF' }}>
+                  ${Math.round(results[activeScenario].cohortLTV.ltvPerFiler).toLocaleString()}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
       {/* Y1 Summary table */}
       <div className="bg-white rounded-xl shadow-sm p-5">
         <h3

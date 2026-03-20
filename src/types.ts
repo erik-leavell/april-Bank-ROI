@@ -104,11 +104,27 @@ export interface YearlyResults {
   cumulativeNet: number;
 }
 
+export interface CohortLTV {
+  years: {
+    ddSwitching: number;
+    depositNII: number;
+    ral: number;
+    premiumFiling: number;
+    crossSell: number;
+    retention: number;
+    interchange: number;
+    total: number;
+  }[];
+  cohortTotal: number;
+  ltvPerFiler: number;
+}
+
 export interface ScenarioResults {
   years: [YearlyResults, YearlyResults, YearlyResults, YearlyResults, YearlyResults];
   fiveYearNetROI: number;
   paybackMonths: number;
   y1ROIPct: number;
+  cohortLTV: CohortLTV;
 }
 
 export interface AllInputs {

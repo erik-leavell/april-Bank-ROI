@@ -1,4 +1,4 @@
-import { ScenarioInputs, YearlyResults, ScenarioResults } from './types';
+import { ScenarioInputs, YearlyResults, ScenarioResults, CohortLTV } from './types';
 
 export function calculateScenario(inputs: ScenarioInputs): ScenarioResults {
   const nimRate = inputs.useFTP ? inputs.ftpCreditRate : inputs.nim;
@@ -145,10 +145,36 @@ export function calculateScenario(inputs: ScenarioInputs): ScenarioResults {
       ? y1.netROI / Math.abs(y1.costs.totalCosts)
       : 0;
 
+  // COHORT LTV — Y1 cohort value across 5 calendar years
+  // DD Switching, Retention, Interchange: flat at Y1 (same people, no new additions from cohort)
+  // Deposit NII, RAL, Premium Filing, Cross-sell: grow with Tab 3 Value Areas rates
+  const cohortLTVYears = years.map((yr, y) => {
+    const ddSwitching = years[0].valueAreas.ddSwitching;      // flat — same DD customers
+    const retention = years[0].valueAreas.retention;           // flat — same retained customers
+    const interchange = years[0].valueAreas.interchange;       // flat — same DD customers transacting
+    const depositNII = yr.valueAreas.depositNII;               // grows with funnel/rate changes
+    const ral = yr.valueAreas.ral;                             // grows with funnel
+    const premiumFiling = yr.valueAreas.premiumFiling;         // grows with funnel
+    const crossSell = yr.valueAreas.crossSell;                 // grows with funnel
+    const total = ddSwitching + depositNII + ral + premiumFiling + crossSell + retention + interchange;
+    return { ddSwitching, depositNII, ral, premiumFiling, crossSell, retention, interchange, total };
+  });
+
+  const cohortTotal = cohortLTVYears.reduce((sum, yr) => sum + yr.total, 0);
+  const y1Filers = years[0].funnel.completedFilers;
+  const ltvPerFiler = y1Filers > 0 ? cohortTotal / y1Filers : 0;
+
+  const cohortLTV: CohortLTV = {
+    years: cohortLTVYears,
+    cohortTotal,
+    ltvPerFiler,
+  };
+
   return {
     years: years as [YearlyResults, YearlyResults, YearlyResults, YearlyResults, YearlyResults],
     fiveYearNetROI,
     paybackMonths,
     y1ROIPct,
+    cohortLTV,
   };
 }
