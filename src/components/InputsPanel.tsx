@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { AllInputs, ScenarioInputs, ScenarioKey } from '../types';
 import InputField from './InputField';
+import SourceTooltip from './SourceTooltip';
+import { SOURCE_META } from '../sourceMeta';
 
 interface InputsPanelProps {
   inputs: AllInputs;
@@ -219,8 +221,11 @@ const InputsPanel: React.FC<InputsPanelProps> = ({ inputs, onInputChange, onRese
             <div className="px-5 py-4 space-y-4">
               {section.fields.map((field) => (
                 <div key={field.key} className="grid grid-cols-[220px_1fr_1fr_1fr] gap-3 items-end">
-                  <div className="text-xs font-medium py-2" style={{ color: '#3A3B4D' }}>
+                  <div className="flex items-center gap-1.5 text-xs font-medium py-2" style={{ color: '#3A3B4D' }}>
                     {field.label}
+                    {SOURCE_META[field.key] && (
+                      <SourceTooltip info={SOURCE_META[field.key]!} />
+                    )}
                   </div>
                   {scenarios.map((s) => (
                     <InputField
